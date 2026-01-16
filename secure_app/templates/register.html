@@ -1,8 +1,13 @@
 <h2>Inscription</h2>
+
 <form method="post">
-    {{ form.hidden_tag() }}
-    {{ form.email.label }} {{ form.email() }}<br><br>
-    {{ form.password.label }} {{ form.password() }}<br><br>
-    {{ form.submit() }}
+    Email :
+    <input type="email" name="email" required><br><br>
+
+    Mot de passe :
+    <input type="password" name="password" required><br><br>
+
+    <button type="submit">S'inscrire</button>
 </form>
+
 <a href="/login">Déjà inscrit ?</a>
