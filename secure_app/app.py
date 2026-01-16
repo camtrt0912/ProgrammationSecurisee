@@ -1,14 +1,41 @@
 from flask import Flask, render_template, request, redirect, session
 from werkzeug.security import generate_password_hash, check_password_hash
+from markupsafe import escape
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, SubmitField
+from wtforms.validators import DataRequired, Email, Length
 import sqlite3
 
+# -------------------------------
+# Configuration Flask
+# -------------------------------
 app = Flask(__name__)
-app.secret_key = "cle_secrete_a_changer"  # change-le plus tard
+app.secret_key = "change_cette_cle_pour_la_prod"
+
+# Sécurité des sessions
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['PERMANENT_SESSION_LIFETIME'] = 1800  # 30 minutes
 
 DATABASE = "database.db"
 
-# Création de la base de données si elle n'existe pas
+# -------------------------------
+# Formulaires Flask-WTF (CSRF)
+# -------------------------------
+class RegisterForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Mot de passe', validators=[DataRequired(), Length(min=8)])
+    submit = SubmitField("S'inscrire")
+
+class LoginForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Mot de passe', validators=[DataRequired()])
+    submit = SubmitField("Se connecter")
+
+# -------------------------------
+# Base SQL
+# -------------------------------
 def init_db():
+    """Créer la table users si elle n'existe pas"""
     conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
     cursor.execute("""
@@ -24,21 +51,23 @@ def init_db():
 
 init_db()
 
-# Page d'accueil → redirige vers login
+# -------------------------------
+# Routes
+# -------------------------------
+
 @app.route("/")
 def index():
     return redirect("/login")
 
-# Page inscription
+# -------------------------------
+# Inscription
+# -------------------------------
 @app.route("/register", methods=["GET", "POST"])
 def register():
-    if request.method == "POST":
-        email = request.form["email"]
-        password = request.form["password"]
-
-        if len(password) < 8:
-            return "Mot de passe trop court (8 caractères minimum)"
-
+    form = RegisterForm()
+    if form.validate_on_submit():
+        email = escape(form.email.data)  # Échappe pour sécurité XSS
+        password = form.password.data
         hashed_password = generate_password_hash(password)
 
         try:
@@ -51,17 +80,19 @@ def register():
             conn.commit()
             conn.close()
             return redirect("/login")
-        except:
+        except sqlite3.IntegrityError:
             return "Email déjà utilisé"
+    return render_template("register.html", form=form)
 
-    return render_template("register.html")
-
-# Page connexion
+# -------------------------------
+# Connexion
+# -------------------------------
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    if request.method == "POST":
-        email = request.form["email"]
-        password = request.form["password"]
+    form = LoginForm()
+    if form.validate_on_submit():
+        email = escape(form.email.data)
+        password = form.password.data
 
         conn = sqlite3.connect(DATABASE)
         cursor = conn.cursor()
@@ -75,22 +106,27 @@ def login():
             return redirect("/dashboard")
         else:
             return "Identifiants incorrects"
+    return render_template("login.html", form=form)
 
-    return render_template("login.html")
-
+# -------------------------------
 # Dashboard sécurisé
+# -------------------------------
 @app.route("/dashboard")
 def dashboard():
     if "user_id" not in session:
         return redirect("/login")
     return render_template("dashboard.html", role=session["role"])
 
+# -------------------------------
 # Déconnexion
+# -------------------------------
 @app.route("/logout")
 def logout():
     session.clear()
     return redirect("/login")
 
+# -------------------------------
 # Lancement
+# -------------------------------
 if __name__ == "__main__":
     app.run(debug=True)
