@@ -1,0 +1,20 @@
+<h2>Liste des utilisateurs</h2>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Email</th>
+        <th>Rôle</th>
+    </tr>
+
+    {% for user in users %}
+    <tr>
+        <td>{{ user[0] }}</td>
+        <td>{{ user[1] }}</td>
+        <td>{{ user[2] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<br>
+<a href="/dashboard">Retour</a>

@@ -1,13 +1,22 @@
-<h2>Inscription</h2>
-
-<form method="post">
-    Email :
-    <input type="email" name="email" required><br><br>
-
-    Mot de passe :
-    <input type="password" name="password" required><br><br>
-
-    <button type="submit">S'inscrire</button>
-</form>
-
-<a href="/login">Déjà inscrit ?</a>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inscription</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <p style="text-align:right; font-size:0.9em; color:gray;">Projet réalisé par {{ author_name }}</p>
+    <div class="container">
+        <h2>Inscription</h2>
+        <form method="post">
+            {{ form.hidden_tag() }}
+            {{ form.email.label }}<br>
+            {{ form.email(size=32) }}<br>
+            {{ form.password.label }}<br>
+            {{ form.password(size=32) }}<br>
+            {{ form.submit() }}
+        </form>
+        <a href="/login">Déjà inscrit ?</a>
+    </div>
+</body>
+</html>

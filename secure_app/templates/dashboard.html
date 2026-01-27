@@ -1,5 +1,37 @@
-<h2>Bienvenue 🎉</h2>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <p style="text-align:right; font-size:0.9em; color:gray;">Projet réalisé par {{ author_name }}</p>
+    <div class="container">
+        <h2>Dashboard</h2>
+        <p>Rôle : {{ role }}</p>
 
-<p>Rôle : {{ role }}</p>
+        {% if role == "admin" %}
+            <h3>Liste des utilisateurs :</h3>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                </tr>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user[0] }}</td>
+                    <td>{{ user[1] }}</td>
+                    <td>{{ user[2] }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>Bienvenue sur votre espace personnel !</p>
+        {% endif %}
 
-<a href="/logout">Déconnexion</a>
+        <a href="/logout">Se déconnecter</a>
+    </div>
+</body>
+</html>
