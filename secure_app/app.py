@@ -91,6 +91,7 @@ def register():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     form = LoginForm()
+    error = None
 
     if form.validate_on_submit():
         email = escape(form.email.data)
@@ -98,8 +99,6 @@ def login():
 
         conn = sqlite3.connect(DATABASE)
         cursor = conn.cursor()
-
-        # Requête paramétrée = protection SQL Injection
         cursor.execute("SELECT * FROM users WHERE email = ?", (email,))
         user = cursor.fetchone()
         conn.close()
@@ -107,13 +106,12 @@ def login():
         if user and check_password_hash(user[2], password):
             session["user_id"] = user[0]
             session["role"] = user[3]
-            # Activation d'une session persistante avec expiration automatique
             session.permanent = True
             return redirect("/dashboard")
         else:
-            return "Identifiants incorrects"
+            error = "Email ou mot de passe incorrect."
 
-    return render_template("login.html", form=form)
+    return render_template("login.html", form=form, error=error)
 
 
 # Dashboard sécurisé

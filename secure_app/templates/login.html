@@ -21,6 +21,9 @@
 
             {{ form.submit() }}
         </form>
+        {% if error %}
+        <p style="color:red;">{{ error }}</p>
+        {% endif %}
 
         <p>Pas encore inscrit ? <a href="/register">S'inscrire</a></p>
     </div>
