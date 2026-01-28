@@ -1,8 +1,8 @@
-# 🛡️ Projet : Programmation Sécurisée
+# Projet : Programmation Sécurisée
 
 **IRA 5 - Projet noté**
 
-## 📝 Présentation Générale
+## Présentation Générale
 
 Ce projet a pour objectif de concevoir, développer et auditer une application Web de gestion de comptes utilisateurs en appliquant les meilleures pratiques de sécurité applicative.
 L'application intègre :
@@ -13,7 +13,7 @@ L'application intègre :
 
 ---
 
-## 💻 Guide d'Installation
+## Guide d'Installation
 
 Suivez ces étapes pour déployer l'environnement de test localement :
 
@@ -51,7 +51,7 @@ Suivez ces étapes pour déployer l'environnement de test localement :
 
 ---
 
-## 🛠️ Description Technique & Sécurité
+## Description Technique & Sécurité
 
 ### 1. Rôle Développeur : Implémentation
 
@@ -82,7 +82,7 @@ L'application a été soumise à une batterie de tests pour valider les protecti
 
 ---
 
-## 📂 Structure du Projet
+## Structure du Projet
 
 ```
 ProgrammationSecurisee/
@@ -96,7 +96,7 @@ ProgrammationSecurisee/
 
 ---
 
-## 📚 Références
+## Références
 
 1. Documentation Flask : [https://flask.palletsprojects.com/](https://flask.palletsprojects.com/)
 2. Flask-Login : [https://flask-login.readthedocs.io/](https://flask-login.readthedocs.io/)
@@ -106,6 +106,6 @@ ProgrammationSecurisee/
 
 ---
 
-## 🧑‍💻 Auteur
+## Autrice
 
-* Camille TOURET IRA5
+* Camille TOURET - IRA5
