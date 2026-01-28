@@ -1,3 +1,6 @@
+#Camille TOURET
+#IRA5
+#28/08/2026
 import os
 from flask import Flask, render_template, request, redirect, session
 from werkzeug.security import generate_password_hash, check_password_hash
